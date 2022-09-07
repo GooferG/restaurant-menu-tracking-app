@@ -9,6 +9,9 @@ const logger = require('morgan');
 const connectDB = require('./config/database');
 
 // Routing
+const indexRouter = require('./routes/index');
+const loginRouter = require('./routes/login');
+const menuRouter = require('./routes/menu');
 
 // Dotenv setup
 require('dotenv').config({ path: './config/.env' });
@@ -41,8 +44,10 @@ app.use(
 
 app.use(flash());
 
-// add routesd here
-//
+// add routes here
+app.use('/', indexRouter);
+app.use('/menu', menuRouter);
+app.use('/login', loginRouter);
 
 // App port listen
 app.listen(process.env.PORT, () => {
