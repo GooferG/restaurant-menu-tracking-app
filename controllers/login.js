@@ -1,5 +1,5 @@
-const e = require('express');
 const schemas = require('../models/schemas.js');
+const bcrypt = require('bcrypt');
 
 // Using the exports.functionName for this controller.
 exports.getLogin = (req, res) => {
@@ -23,7 +23,9 @@ exports.postLogin = async (req, res) => {
   let email = req.body.emailInput;
   let pass = req.body.pwdInput;
   let loginSuccess = false;
+  let sesh = req.session;
   sesh.loggedIn = false;
+  console.log(pass);
 
   let users = schemas.users;
   let qry = {
@@ -55,21 +57,21 @@ exports.postLogin = async (req, res) => {
   }
 };
 
-exports.getSignup = async (req, res) => {
+exports.postSignup = async (req, res) => {
   let email = req.body.emailInput;
   let pass = req.body.pwdInput;
 
   if (email !== '' && pass !== '') {
-    let users = schema.users;
+    let users = schemas.users;
     let qry = { email: email };
 
     let userSearch = await users.findOne(qry).then(async (data) => {
       if (!data) {
         let saltRounds = 10;
-        let passSalt = await bcrypt.getSalt(saltRound, async (err, salt) => {
+        let passSalt = await bcrypt.genSalt(saltRounds, async (err, salt) => {
           let passHash = await bcrypt.hash(pass, salt, async (err, hash) => {
             let acct = { email: email, pwd: hash, level: 'admin' };
-            let newUser = new Schemas.users(acct);
+            let newUser = new users(acct);
             let saveUser = await newUser.save();
           });
         });
