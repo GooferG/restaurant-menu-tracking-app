@@ -8,5 +8,6 @@ router.get('/:id', menuCtrl.editMenu);
 router.get('/delete/:id', menuCtrl.deleteMenu);
 
 router.post('/save', menuCtrl.saveMenu);
+router.post('/new', menuCtrl.newMenu);
 
 module.exports = router;
